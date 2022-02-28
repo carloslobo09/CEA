@@ -1,0 +1,117 @@
+CREATE DATABASE IF NOT EXISTS institutocea;
+USE institutocea;
+CREATE TABLE profesores(id_prof integer auto_increment,
+        nombre varchar(40) NOT NULL,
+        dni bigint(8) NOT NULL,
+        celular bigint(10) NOT NULL,
+        direccion varchar(80),
+        sexo varchar(1) NOT NULL default 'M',
+        fdnac date NOT NULL,
+        foto longblob,
+        email blob,
+        redsoc blob,
+        especialidad varchar(40),
+        PRIMARY KEY (id_prof));
+CREATE TABLE cursos(id_cur integer auto_increment,
+        id_prof integer(5) NOT NULL,
+        ncurso varchar(40) NOT NULL,
+        duracion integer(5) NOT NULL,
+        pinscrip decimal (10,2) NOT NULL,
+        precio decimal(10,2) NOT NULL,
+        PRIMARY KEY (id_cur),
+        FOREIGN KEY (id_prof) REFERENCES profesores (id_prof));
+CREATE TABLE IF NOT EXISTS alumnos(id_alum integer auto_increment,
+        nombre varchar(40) NOT NULL,
+        dni bigint(8) NOT NULL,
+        celular bigint(10) NOT NULL,
+        direccion varchar(80),
+        sexo varchar(1) NOT NULL default 'M',
+        fdnac date NOT NULL,
+        foto longblob,
+        email blob,
+        redsoc blob,
+        id_cur integer(5) NOT NULL,
+        triggxcuo integer(3) NOT NULL,
+        FOREIGN KEY (id_cur) REFERENCES cursos (id_cur) on delete cascade,
+        PRIMARY KEY (id_alum));
+CREATE TABLE IF NOT EXISTS cuotas(id_cuo bigint auto_increment,
+    id_alum integer(11) NOT NULL,
+    concepto varchar(12) NOT NULL,
+    importe decimal(10,2) NOT NULL,
+    saldo decimal(10,2) NOT NULL,
+    f_pago date NOT NULL,
+    f_venc date NOT NULL,
+    estado tinyint (1) default '1' NOT NULL,
+    FOREIGN KEY (id_alum) REFERENCES alumnos(id_alum) on delete cascade,
+    PRIMARY KEY (id_cuo));
+CREATE TABLE usuarios(id_usu integer auto_increment,
+        usuario varchar(40) NOT NULL,
+        password varchar(40) NOT NULL,
+        PRIMARY KEY (id_usu));
+
+INSERT INTO usuarios (usuario,password) VALUES ('cristiancea','12345');
+
+
+
+DELIMITER $$
+CREATE OR REPLACE TRIGGER ALUMXCUO AFTER INSERT ON alumnos FOR EACH ROW
+BEGIN
+SET lc_time_names = 'es_ES';
+IF NEW.triggxcuo = 1  THEN
+INSERT INTO cuotas(id_alum,concepto,importe,saldo,f_pago,f_venc,estado) VALUES (NEW.id_alum,"INSCRIPCION","","",NOW(),DATE_ADD(NOW(), INTERVAL 1 MONTH),1),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 1 month))),"","","",DATE_ADD(NOW(), INTERVAL 2 MONTH),0);
+END IF;
+IF NEW.triggxcuo = 2  THEN
+INSERT INTO cuotas(id_alum,concepto,importe,saldo,f_pago,f_venc,estado) VALUES (NEW.id_alum,"INSCRIPCION","","",NOW(),DATE_ADD(NOW(), INTERVAL 1 MONTH),1),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 1 month))),"","","",DATE_ADD(NOW(), INTERVAL 2 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 2 month))),"","","",DATE_ADD(NOW(), INTERVAL 3 MONTH),0);
+END IF;
+IF NEW.triggxcuo = 3  THEN
+INSERT INTO cuotas(id_alum,concepto,importe,saldo,f_pago,f_venc,estado) VALUES (NEW.id_alum,"INSCRIPCION","","",NOW(),DATE_ADD(NOW(), INTERVAL 1 MONTH),1),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 1 month))),"","","",DATE_ADD(NOW(), INTERVAL 2 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 2 month))),"","","",DATE_ADD(NOW(), INTERVAL 3 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 3 month))),"","","",DATE_ADD(NOW(), INTERVAL 4 MONTH),0);
+END IF;
+IF NEW.triggxcuo = 4  THEN
+INSERT INTO cuotas(id_alum,concepto,importe,saldo,f_pago,f_venc,estado) VALUES (NEW.id_alum,"INSCRIPCION","","",NOW(),DATE_ADD(NOW(), INTERVAL 1 MONTH),1),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 1 month))),"","","",DATE_ADD(NOW(), INTERVAL 2 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 2 month))),"","","",DATE_ADD(NOW(), INTERVAL 3 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 3 month))),"","","",DATE_ADD(NOW(), INTERVAL 4 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 4 month))),"","","",DATE_ADD(NOW(), INTERVAL 5 MONTH),0);
+END IF;
+IF NEW.triggxcuo = 5  THEN
+INSERT INTO cuotas(id_alum,concepto,importe,saldo,f_pago,f_venc,estado) VALUES (NEW.id_alum,"INSCRIPCION","","",NOW(),DATE_ADD(NOW(), INTERVAL 1 MONTH),1),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 1 month))),"","","",DATE_ADD(NOW(), INTERVAL 2 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 2 month))),"","","",DATE_ADD(NOW(), INTERVAL 3 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 3 month))),"","","",DATE_ADD(NOW(), INTERVAL 4 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 4 month))),"","","",DATE_ADD(NOW(), INTERVAL 5 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 5 month))),"","","",DATE_ADD(NOW(), INTERVAL 6 MONTH),0);
+END IF;
+IF NEW.triggxcuo = 6  THEN
+INSERT INTO cuotas(id_alum,concepto,importe,saldo,f_pago,f_venc,estado) VALUES (NEW.id_alum,"INSCRIPCION","","",NOW(),DATE_ADD(NOW(), INTERVAL 1 MONTH),1),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 1 month))),"","","",DATE_ADD(NOW(), INTERVAL 2 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 2 month))),"","","",DATE_ADD(NOW(), INTERVAL 3 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 3 month))),"","","",DATE_ADD(NOW(), INTERVAL 4 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 4 month))),"","","",DATE_ADD(NOW(), INTERVAL 5 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 5 month))),"","","",DATE_ADD(NOW(), INTERVAL 6 MONTH),0),
+(NEW.id_alum,upper(monthname(date_add(now(),interval 6 month))),"","","",DATE_ADD(NOW(), INTERVAL 7 MONTH),0);
+END IF;
+END; $$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

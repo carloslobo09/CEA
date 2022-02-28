@@ -1,0 +1,2 @@
+MySql para conexion usuario='root' password='rootroot'
+Copiar codigo sql de archivo 'Ejecutar' antes de usar el sistema.
